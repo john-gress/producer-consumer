@@ -42,6 +42,10 @@ TARGET_LINK_LIBRARIES(${LIBRARY_TO_BUILD} ${LIBS})
 INCLUDE (${pc_SOURCE_DIR}/Test.cmake)
 
 set(producer_exe producer)
-add_executable(${producer_exe} src/producer.cpp)
+add_executable(${producer_exe} src/producer/producer.cpp)
 target_link_libraries(${producer_exe} ${LIBRARY_TO_BUILD} -lstdc++ ${PLATFORM_LINK_LIBRIES})
+
+set(consumer_exe consumer)
+add_executable(${consumer_exe} src/consumer/consumer.cpp)
+target_link_libraries(${consumer_exe} ${LIBRARY_TO_BUILD} -lstdc++ ${PLATFORM_LINK_LIBRIES})
 

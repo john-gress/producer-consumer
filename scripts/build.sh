@@ -15,3 +15,5 @@ cmake -DVERSION=1.0 \
 
 make -j6
 
+printf "\n\nLook for build output in \"build\" directory\n"
+

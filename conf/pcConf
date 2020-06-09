@@ -1,0 +1,6 @@
+NumSharedBufs:100
+SizeSharedBuf:1024
+SharedMemName:PcSharedMem
+BufferSemaName:bufSem
+FinishedSemaName:finishSem
+SentenceFilename:~/sentences/big.txt
