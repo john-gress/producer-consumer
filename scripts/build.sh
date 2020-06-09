@@ -11,7 +11,7 @@ rm -f CMakeCach*
 rm -rf CMakeFiles
 
 cmake -DVERSION=1.0 \
-      -DCMAKE_CXX_COMPILER_ARG1:STRING=' -Wall -Werror -fPIC -O0 -m64 -Wl,-rpath -Wl,.' ..
+      -DCMAKE_CXX_COMPILER_ARG1:STRING=' -ggdb -Wall -Werror -fPIC -O0 -m64 -Wl,-rpath -Wl,.' ..
 
 make -j6
 
