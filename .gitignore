@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+*.swp
+build
+thirdparty/gtest-1.7.0
