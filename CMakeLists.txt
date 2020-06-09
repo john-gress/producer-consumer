@@ -3,6 +3,7 @@ CMAKE_MINIMUM_REQUIRED (VERSION 2.6)
 ENABLE_LANGUAGE(CXX)
 
 PROJECT (pc)
+
 SET(PROJECT_SRC ${pc_SOURCE_DIR}/src)
 SET(DIR_UNIT_TEST ${pc_SOURCE_DIR}/test)
 SET(DIR_3RDPARTY ${pc_SOURCE_DIR}/thirdparty)
@@ -39,4 +40,8 @@ TARGET_LINK_LIBRARIES(${LIBRARY_TO_BUILD} ${LIBS})
 
 # Setup unit tests
 INCLUDE (${pc_SOURCE_DIR}/Test.cmake)
+
+set(producer_exe producer)
+add_executable(${producer_exe} src/producer.cpp)
+target_link_libraries(${producer_exe} ${LIBRARY_TO_BUILD} -lstdc++ ${PLATFORM_LINK_LIBRIES})
 
