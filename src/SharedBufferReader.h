@@ -1,3 +1,5 @@
+#pragma once
+
 #include "SharedBuffer.h"
 #include <string>
 

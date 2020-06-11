@@ -1,5 +1,4 @@
 #include <iostream>
-#include "pc.h"
 #include "Config.h"
 #include <unistd.h>
 #include <cstdlib>
@@ -46,11 +45,4 @@ int main(int argc, char* argv[]) {
 
    std::cout << "Num Bufs: " << N << ", filename: " << filename << std::endl;
 
-   pc myPc;
-   Config myConf("../conf/pcConf");
-   if (myPc.pcTest()) {
-      std::cout << "Producer: Hello pcTest" << std::endl;
-   } else {
-      std::cout << "Producer: No Hello pcTest" << std::endl;
-   }
 }
