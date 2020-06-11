@@ -53,12 +53,6 @@ SharedBuffer::~SharedBuffer() {
 
 char* SharedBuffer::GetSharedMemBufPtr() {
    char* bufPtr = reinterpret_cast<char *>(mShrMemPtr);
-   /*
-   int bufNum = mBufCount % mNumBufs;
-   int bufOffset = bufNum * mBufSize;
-   char* rBufPtr = bufPtr + bufOffset;
-   return (rBufPtr);
-   */
    return (bufPtr + ((mBufCount % mNumBufs) * mBufSize));
 }
 
