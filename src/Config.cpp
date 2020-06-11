@@ -25,18 +25,6 @@ void Config::LoadConfig(std::string& confFile) {
    fileInput.close();
 }
 
-int Config::GetNumSharedBufs() {
-   int numbufs(100);
-   auto it = mConfig.find("NumSharedBufs");
-   if (it != mConfig.end()) {
-      numbufs = std::stoi(it->second);
-      return numbufs;
-   }
-
-   std::cerr << "NumSharedBufs not found in config. Using default value: " << numbufs << std::endl;
-   return numbufs;
-}
-
 int Config::GetSizeSharedBuf() {
    int bufsize(1024);
    auto it = mConfig.find("SizeSharedBuf");
@@ -79,12 +67,3 @@ std::string Config::GetFinishedSemaName() {
    return {"finishSemaphore"};
 }
 
-std::string Config::GetSentenceFilename() {
-   auto it = mConfig.find("SentenceFilename");
-   if (it != mConfig.end()) {
-      return it->second;
-   }
-
-   std::cerr << "SentenceFilename not found in config. Using default name: \"./sentences\"" << std::endl;
-   return {"./sentences"};
-}

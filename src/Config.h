@@ -6,12 +6,10 @@ class Config {
       Config(std::string confFile);
       ~Config();
 
-      int GetNumSharedBufs();
       int GetSizeSharedBuf();
       std::string GetSharedBufName();
       std::string GetBufferSemaName();
       std::string GetFinishedSemaName();
-      std::string GetSentenceFilename();
 
    private:
       void LoadConfig(std::string& confFile);
