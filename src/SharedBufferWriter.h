@@ -5,7 +5,7 @@
 
 class SharedBufferWriter : public SharedBuffer {
    public:
-      SharedBufferWriter(int numBufs, int sizeBuf, std::string bufName, bool create);
+      SharedBufferWriter(int numBufs, int sizeBuf, std::string bufName);
       ~SharedBufferWriter();
 
       bool AddSentenceToBuffer(std::string& sentence);

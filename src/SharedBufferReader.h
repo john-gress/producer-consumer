@@ -5,7 +5,7 @@
 
 class SharedBufferReader : public SharedBuffer {
    public:
-      SharedBufferReader(int numBufs, int sizeBuf, std::string bufName, bool create);
+      SharedBufferReader(int numBufs, int sizeBuf, std::string bufName);
       ~SharedBufferReader();
 
       void GetNextBuffer(char* bufPtr);

@@ -5,7 +5,7 @@
 
 Producer::Producer(std::string confFile, int numBufs, std::string& inputFile) :
    mConfig(confFile),
-   mSharedBufferWriter(numBufs, mConfig.GetSizeSharedBuf(), mConfig.GetSharedBufName(), true),
+   mSharedBufferWriter(numBufs, mConfig.GetSizeSharedBuf(), mConfig.GetSharedBufName()),
    mFileInput(inputFile, mConfig.GetSizeSharedBuf()),
    mIpc(numBufs, mConfig.GetBufferSemaName(), mConfig.GetFinishedSemaName(), true),
    mBufSize(mConfig.GetSizeSharedBuf())

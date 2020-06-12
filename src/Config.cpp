@@ -43,8 +43,8 @@ std::string Config::GetSharedBufName() {
       return it->second;
    }
 
-   std::cerr << "SharedMemName not found in config. Using default name: \"sharedMemSemaphore\"" << std::endl;
-   return {"sharedMemSemaphore"};
+   std::cerr << "SharedMemName not found in config. Using default name: \"sharedPcMemory\"" << std::endl;
+   return {"sharedPcMemory"};
 }
 
 std::string Config::GetBufferSemaName() {

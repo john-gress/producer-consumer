@@ -2,11 +2,11 @@
 #include "SharedBufferReaderTests.h"
 
 TEST_F(SharedBufferReaderTests, SharedBufferReaderConstructorTest) {
-   SharedBufferReader mySharedBufferReader(mNumBufs, mBufSize, mSharedMemName.c_str(), false);
+   SharedBufferReader mySharedBufferReader(mNumBufs, mBufSize, mSharedMemName.c_str());
 }
 
 TEST_F(SharedBufferReaderTests, GetNextBufferTest) {
-   SharedBufferReader mySharedBufferReader(mNumBufs, mBufSize, mSharedMemName.c_str(), false);
+   SharedBufferReader mySharedBufferReader(mNumBufs, mBufSize, mSharedMemName.c_str());
    std::string sBuf{"This is the sentence in the buffer for buffer # "};
 
    for (int bufCount = 0; bufCount < 100; bufCount++) {

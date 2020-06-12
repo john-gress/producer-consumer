@@ -2,8 +2,8 @@
 
 class MockSharedBufferWriter : public SharedBufferWriter {
    public:
-      MockSharedBufferWriter(int numBufs, int sizeBuf, std::string bufName, bool create) :
-         SharedBufferWriter(numBufs, sizeBuf, bufName, create)
+      MockSharedBufferWriter(int numBufs, int sizeBuf, std::string bufName) :
+         SharedBufferWriter(numBufs, sizeBuf, bufName)
       {
       }
 

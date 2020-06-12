@@ -5,7 +5,7 @@
 
 Consumer::Consumer(std::string confFile, int numBufs, std::string& match) :
    mConfig(confFile),
-   mSharedBufferReader(numBufs, mConfig.GetSizeSharedBuf(), mConfig.GetSharedBufName(), false),
+   mSharedBufferReader(numBufs, mConfig.GetSizeSharedBuf(), mConfig.GetSharedBufName()),
    mSentence(match, mConfig.GetSizeSharedBuf()), 
    mIpc(numBufs, mConfig.GetBufferSemaName(), mConfig.GetFinishedSemaName(), false),
    mBufSize(mConfig.GetSizeSharedBuf())
@@ -30,7 +30,6 @@ void Consumer::Run() {
    }
    mIpc.SignalFinished();
 
-   std::this_thread::sleep_for(std::chrono::microseconds(100));
 }
 
 void Consumer::ReportStats() {

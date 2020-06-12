@@ -2,12 +2,12 @@
 #include "SharedBufferWriterTests.h"
 
 TEST_F(SharedBufferWriterTests, SharedBufferWriterConstructorTest) {
-   SharedBufferWriter mySharedBufferWriter(10, 1024, "mySharedMem", true);
+   SharedBufferWriter mySharedBufferWriter(10, 1024, "mySharedMem");
 }
 
 TEST_F(SharedBufferWriterTests, SentenceFitsTest) {
    const int kBufSize(64);
-   MockSharedBufferWriter mySharedBufferWriter(10, kBufSize, "mySharedMem", true);
+   MockSharedBufferWriter mySharedBufferWriter(10, kBufSize, "mySharedMem");
 
    EXPECT_TRUE(mySharedBufferWriter.SentenceFits(kBufSize - sizeof(unsigned long)));
    EXPECT_FALSE(mySharedBufferWriter.SentenceFits((kBufSize - sizeof(unsigned long)) + 1));
@@ -15,7 +15,7 @@ TEST_F(SharedBufferWriterTests, SentenceFitsTest) {
 
 TEST_F(SharedBufferWriterTests, CopyToBufTest) {
    const int kBufSize(1024);
-   MockSharedBufferWriter mySharedBufferWriter(10, kBufSize, "mySharedMem", true);
+   MockSharedBufferWriter mySharedBufferWriter(10, kBufSize, "mySharedMem");
 
    std::string sentence1{"This is a test."};
    
@@ -44,7 +44,7 @@ TEST_F(SharedBufferWriterTests, CopyToBufTest) {
 
 TEST_F(SharedBufferWriterTests, WriteBufTest) {
    const int kBufSize(1024);
-   MockSharedBufferWriter mySharedBufferWriter(10, kBufSize, "mySharedMem", true);
+   MockSharedBufferWriter mySharedBufferWriter(10, kBufSize, "mySharedMem");
 
    std::string sentence1{"This is a test."};
    
@@ -78,10 +78,6 @@ TEST_F(SharedBufferWriterTests, WriteBufTest) {
 
    EXPECT_NE(shrMemBuf1Ptr, shrMemBuf2Ptr);
 
-   // ===============
-   //const int kBufSize(1024);
-   //MockSharedBufferWriter mySharedBufferWriter(10, kBufSize, "mySharedMem", true);
-
    std::string sentence{"This is a test sentence."};
    
    for (int i = 0; i < 100; i++) {
@@ -104,7 +100,7 @@ TEST_F(SharedBufferWriterTests, WriteBufTest) {
 
 TEST_F(SharedBufferWriterTests, AddSentenceToBufTest) {
    // One sentence fits exactly in the buffer
-   SharedBufferWriter mySharedBufferWriter1(10, 32, "mySharedMem", true);
+   SharedBufferWriter mySharedBufferWriter1(10, 32, "mySharedMem");
    std::string sentence1{"This is a test sentence."}; // len = 24; add 8 for size to get 32 bytes in buffer.
 
    // First time buffer is not written to shared memory
@@ -116,7 +112,7 @@ TEST_F(SharedBufferWriterTests, AddSentenceToBufTest) {
    }
 
    // Two sentences fit, third sentence causes the buffer to be written to shared memory.
-   SharedBufferWriter mySharedBufferWriter2(10, 128, "mySharedMem", true);
+   SharedBufferWriter mySharedBufferWriter2(10, 128, "mySharedMem");
 
    // sentence len = 40; so 48 * 2 = 96, 48 * 3 = 144; 144 > 128
    std::string sentence2{"This is a test sentence to fill the buf."};

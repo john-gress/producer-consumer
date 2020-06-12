@@ -2,8 +2,8 @@
 #include <iostream>
 #include <cstring>
 
-SharedBufferWriter::SharedBufferWriter(int numBufs, int sizeBuf, std::string bufName, bool create) :
-   SharedBuffer(numBufs, sizeBuf, bufName, create),
+SharedBufferWriter::SharedBufferWriter(int numBufs, int sizeBuf, std::string bufName) :
+   SharedBuffer(numBufs, sizeBuf, bufName, true), // create = true; The writer creates the shared memory
    mOffset(0),
    mWorkingBuf(nullptr)
 {
