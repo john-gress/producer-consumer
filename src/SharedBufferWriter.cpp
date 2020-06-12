@@ -24,7 +24,8 @@ bool SharedBufferWriter::AddSentenceToBuffer(std::string& sentence) {
    if (SentenceFits(sentence.length())) {
       CopyToBuf(sentence);
    } else {
-      WriteBuf();
+      char* shrBufPtr;
+      WriteBuf(shrBufPtr);
       BufferWrittenToSharedMem = true;
       CopyToBuf(sentence);
    }
@@ -53,15 +54,17 @@ void SharedBufferWriter::ZeroTrailingLen() {
    }
 }
 
-char* SharedBufferWriter::WriteBuf() {
-   char* shrBufPtr = GetSharedMemBufPtr();
+bool SharedBufferWriter::WriteBuf(char*& shrBufPtr) {
+   bool bufWritten(false);
+   shrBufPtr = GetSharedMemBufPtr();
    //printf("WriteBuf: %p\n", shrBufPtr);
    if (mOffset > 0) {
       ZeroTrailingLen();
       memcpy(shrBufPtr, mWorkingBuf, mOffset);
       mBufCount++;
       mOffset = 0;
+      bufWritten = true;
    }
 
-   return shrBufPtr;
+   return bufWritten;
 }

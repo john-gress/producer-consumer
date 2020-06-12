@@ -50,7 +50,8 @@ TEST_F(SharedBufferWriterTests, WriteBufTest) {
    
    char* buf1Ptr = mySharedBufferWriter.CopyToBuf(sentence1);
 
-   char* shrMemBuf1Ptr = mySharedBufferWriter.WriteBuf();
+   char* shrMemBuf1Ptr;
+   EXPECT_TRUE(mySharedBufferWriter.WriteBuf(shrMemBuf1Ptr));
    EXPECT_NE(buf1Ptr, shrMemBuf1Ptr);
 
    unsigned long size1 = *(reinterpret_cast<unsigned long *>(shrMemBuf1Ptr));
@@ -64,7 +65,8 @@ TEST_F(SharedBufferWriterTests, WriteBufTest) {
    
    char* buf2Ptr = mySharedBufferWriter.CopyToBuf(sentence2);
 
-   char* shrMemBuf2Ptr = mySharedBufferWriter.WriteBuf();
+   char* shrMemBuf2Ptr;
+   EXPECT_TRUE(mySharedBufferWriter.WriteBuf(shrMemBuf2Ptr));
    EXPECT_NE(buf2Ptr, shrMemBuf2Ptr);
 
    unsigned long size2 = *(reinterpret_cast<unsigned long *>(shrMemBuf2Ptr));
@@ -86,7 +88,8 @@ TEST_F(SharedBufferWriterTests, WriteBufTest) {
       sentence.push_back('x'); // Increase sentence size by 1
       char* bufPtr = mySharedBufferWriter.CopyToBuf(sentence);
 
-      char* shrMemBufPtr = mySharedBufferWriter.WriteBuf();
+      char* shrMemBufPtr;
+      EXPECT_TRUE(mySharedBufferWriter.WriteBuf(shrMemBufPtr));
       EXPECT_NE(bufPtr, shrMemBufPtr);
 
       unsigned long size1 = *(reinterpret_cast<unsigned long *>(shrMemBufPtr));

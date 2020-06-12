@@ -41,26 +41,26 @@ void Ipc::SetupIpc(bool create) {
 Ipc::~Ipc() {
    if (sem_close(mBufferSemPtr) != 0) {
       std::string errnoMsg(strerror(errno));
-      std::cout << "Failed to close buffer semaphore: " << errnoMsg << std::endl;
+      std::cerr << "Failed to close buffer semaphore: " << errnoMsg << std::endl;
    }
    
    if (sem_unlink(mBufferSemName.c_str()) != 0 && errno != ENOENT) {
       // ENOENT = No such file or directory. This is normal, as there can be a race condition for which process
       // deletes the file.
       std::string errnoMsg(strerror(errno));
-      std::cout << "Failed to unlink: " <<  mBufferSemName << ", " << errnoMsg << std::endl;
+      std::cerr << "Failed to unlink: " <<  mBufferSemName << ", " << errnoMsg << std::endl;
    }
 
    if (sem_close(mFinishedSemPtr) != 0) {
       std::string errnoMsg(strerror(errno));
-      std::cout << "Failed to close buffer semaphore: " << errnoMsg << std::endl;
+      std::cerr << "Failed to close buffer semaphore: " << errnoMsg << std::endl;
    }
    
    if (sem_unlink(mFinishedSemName.c_str()) != 0 && errno != ENOENT) {
       // ENOENT = No such file or directory. This is normal, as there can be a race condition for which process
       // deletes the file.
       std::string errnoMsg(strerror(errno));
-      std::cout << "Failed to unlink: " <<  mFinishedSemName << ", " << errnoMsg << std::endl;
+      std::cerr << "Failed to unlink: " <<  mFinishedSemName << ", " << errnoMsg << std::endl;
    }
 }
 

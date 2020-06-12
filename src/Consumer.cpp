@@ -8,9 +8,7 @@ Consumer::Consumer(std::string confFile, int numBufs, std::string& match) :
    mSharedBufferReader(numBufs, mConfig.GetSizeSharedBuf(), mConfig.GetSharedBufName(), false),
    mSentence(match, mConfig.GetSizeSharedBuf()), 
    mIpc(numBufs, mConfig.GetBufferSemaName(), mConfig.GetFinishedSemaName(), false),
-   mBufSize(mConfig.GetSizeSharedBuf()),
-   mBufsReceived(0),
-   mSentenceMatch(0)
+   mBufSize(mConfig.GetSizeSharedBuf())
 {
 }
 
@@ -22,10 +20,9 @@ void Consumer::Run() {
    while (mIpc.BufsAvailable() || ! mIpc.IsProducerFinished()) {
       if (mIpc.BufsAvailable()) {
          // Process buffer
-         mBufsReceived++;
          mSharedBufferReader.GetNextBuffer(buf);
          mIpc.DecrementBuffer();
-         mSentenceMatch += mSentence.ProcessBuf(buf);
+         mSentence.ProcessBuf(buf);
       } else {
          // No buffers to process, but producer is not finished.
          std::this_thread::sleep_for(std::chrono::microseconds(1));
@@ -33,6 +30,16 @@ void Consumer::Run() {
    }
    mIpc.SignalFinished();
 
-   std::this_thread::sleep_for(std::chrono::seconds(2));
+   std::this_thread::sleep_for(std::chrono::microseconds(100));
 }
 
+void Consumer::ReportStats() {
+   std::cout << std::endl;
+   std::cout << "========================================================================" << std::endl;
+   std::cout << "Buffers received from producer: " << mSharedBufferReader.GetBufCount() << std::endl;
+   std::cout << "Valid sentences: " << mSentence.GetSentenceCount() << std::endl;
+   std::cout << "Corrupt sentences: " << mSentence.GetCorruptCount() << std::endl;
+   std::cout << "Corrupt sizes: " << mSentence.GetBadSizeCount() << std::endl;
+   std::cout << "Matching sentences: " << mSentence.GetMatchedCount() << std::endl;
+   std::cout << "========================================================================" << std::endl;
+}

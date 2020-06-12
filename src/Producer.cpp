@@ -8,9 +8,7 @@ Producer::Producer(std::string confFile, int numBufs, std::string& inputFile) :
    mSharedBufferWriter(numBufs, mConfig.GetSizeSharedBuf(), mConfig.GetSharedBufName(), true),
    mFileInput(inputFile, mConfig.GetSizeSharedBuf()),
    mIpc(numBufs, mConfig.GetBufferSemaName(), mConfig.GetFinishedSemaName(), true),
-   mBufSize(mConfig.GetSizeSharedBuf()),
-   mBufsSent(0),
-   mSentenceCount(0)
+   mBufSize(mConfig.GetSizeSharedBuf())
 {
 }
 
@@ -31,7 +29,9 @@ void Producer::Run() {
       }
    }
    // Send a partial buffer (the last one) to the consumer
-   bool bufWritten = mSharedBufferWriter.WriteBuf();
+   char* shrBufPtr;
+      
+   bool bufWritten = mSharedBufferWriter.WriteBuf(shrBufPtr);
    if (bufWritten) {
       mIpc.IncrementBuffer();
    }
@@ -48,4 +48,13 @@ void Producer::Shutdown() {
    while (! mIpc.IsConsumerFinished()) {
       std::this_thread::sleep_for(std::chrono::microseconds(1));
    }
+}
+
+void Producer::ReportStats() {
+   std::cout << std::endl;
+   std::cout << "========================================================================" << std::endl;
+   std::cout << "Buffers sent to consumer: " << mSharedBufferWriter.GetBufCount() << std::endl;
+   std::cout << "Sentences process from input file: " << mFileInput.GetSentenceCount() << std::endl;
+   std::cout << "Oversized sentences in input file: " << mFileInput.GetOversizeCount() << std::endl;
+   std::cout << "========================================================================" << std::endl;
 }

@@ -10,8 +10,8 @@ class MockSharedBufferWriter : public SharedBufferWriter {
       ~MockSharedBufferWriter() {
       }
 
-      char* WriteBuf() override {
-         return SharedBufferWriter::WriteBuf();
+      bool WriteBuf(char*& shrBufPtr) override {
+         return SharedBufferWriter::WriteBuf(shrBufPtr);
       }
 
       bool SentenceFits(int len) override {

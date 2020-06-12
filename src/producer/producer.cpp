@@ -47,5 +47,6 @@ int main(int argc, char* argv[]) {
 
    Producer producer("../conf/pcConf", N, filename);
    producer.Run();
+   producer.ReportStats();
    producer.Shutdown();
 }

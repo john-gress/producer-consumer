@@ -7,13 +7,17 @@ class SharedBuffer {
       SharedBuffer(int numBufs, int sizeBuf, std::string bufName, bool create);
       virtual ~SharedBuffer();
 
+      unsigned long GetBufCount() {
+         return mBufCount;
+      }
+
    protected:
       char* GetSharedMemBufPtr();
 
       void SetupSharedBuffer(bool create);
       int mNumBufs;
       int mBufSize;
-      int mBufCount;
+      unsigned long mBufCount;
       std::string mSharedMemName;
       int mShrMemFd;
       void* mShrMemPtr;

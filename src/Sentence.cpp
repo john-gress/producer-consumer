@@ -5,7 +5,11 @@ Sentence::Sentence(std::string match, int bufSize) :
    mMatch(match),
    mBufSize(bufSize),
    mOffset(0),
-   mBufPtr(nullptr)
+   mBufPtr(nullptr),
+   mMatchedCount(0),
+   mSentenceCount(0),
+   mCorruptCount(0),
+   mBadSizeCount(0)
 {
 }
 
@@ -22,13 +26,17 @@ int Sentence::ProcessBuf(char* buf) {
       if (GetLength(len)) {
          AdvanceOffset(kLenSize); // Advance past the unsigned long
          if (GoodPunctuation(len) && ValidChars(len)) {
+            mSentenceCount++;
             if (StringMatch(len)) {
                numMatches++;
+               mMatchedCount++;
             }
             AdvanceOffset(len); // Advance past the sentence
          } else {
             // Stop processing buffer. Corruption discovered.
-            //std::cout << "Stop processing" << std::endl;
+            //std::string s((mBufPtr + mOffset), len);
+            //std::cout << std::endl << std::endl << "Corrupt s: " << s << std::endl << std::endl;
+            mCorruptCount++;
             len = 0;
          }
       }
@@ -46,15 +54,17 @@ void Sentence::AdvanceOffset(int advance) {
 }
 
 bool Sentence::GetLength(unsigned long& len) {
-   len = *(reinterpret_cast<unsigned long *>(mBufPtr + mOffset));
-   // Calculate how much space is left in the buffer
-   unsigned long bufSpace = mBufSize - mOffset - kLenSize;
-   if (len > 0 && len <= bufSpace) {
-      return true; // The sentence length is within the boundaries of buffer
-   }
-
    len = 0;
-   return false;
+   unsigned long bufSpace = mBufSize - mOffset;
+   if (bufSpace > kLenSize) {
+      len = *(reinterpret_cast<unsigned long *>(mBufPtr + mOffset));
+      bufSpace -= kLenSize;
+      if (len > bufSpace) {
+         len = 0;
+         mBadSizeCount++;
+      }
+   }
+   return len > 0;
 }
 
 bool Sentence::GoodPunctuation(unsigned long len) {

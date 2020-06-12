@@ -10,6 +10,7 @@ class Consumer {
       Consumer(std::string confFile, int numBufs, std::string& match);
       ~Consumer();
       void Run();
+      void ReportStats();
 
    protected:
 
@@ -19,6 +20,4 @@ class Consumer {
       Sentence mSentence;
       Ipc mIpc;
       int mBufSize;
-      unsigned long mBufsReceived;
-      unsigned long mSentenceMatch;
 };

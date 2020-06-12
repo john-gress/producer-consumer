@@ -9,6 +9,20 @@ class Sentence {
 
       int ProcessBuf(char* buf);
 
+      unsigned int GetMatchedCount() {
+         return mMatchedCount;
+      }
+      unsigned int GetSentenceCount() {
+         return mSentenceCount;
+      }
+      unsigned int GetCorruptCount() {
+         return mCorruptCount;
+      }
+
+      unsigned int GetBadSizeCount() {
+         return mBadSizeCount;
+      }
+
    protected:
       virtual void SetBufPtr(char* buf);
       virtual void AdvanceOffset(int advance);
@@ -23,4 +37,8 @@ class Sentence {
       int mOffset;
       char* mBufPtr;
       static const int kLenSize = sizeof(unsigned long);
+      unsigned int mMatchedCount;
+      unsigned int mSentenceCount;
+      unsigned int mCorruptCount;
+      unsigned int mBadSizeCount;
 };

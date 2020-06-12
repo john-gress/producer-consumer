@@ -11,15 +11,15 @@ class Producer {
       ~Producer();
       void Run();
       void Shutdown();
+      void ReportStats();
 
    protected:
       void WaitForAvailableBufs();
+
    private:
       Config mConfig;
       SharedBufferWriter mSharedBufferWriter;
       FileInput mFileInput;
       Ipc mIpc;
       int mBufSize;
-      unsigned long mBufsSent;
-      unsigned long mSentenceCount;
 };

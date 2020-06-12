@@ -47,4 +47,5 @@ int main(int argc, char* argv[]) {
 
    Consumer consumer("../conf/pcConf", N, match);
    consumer.Run();
+   consumer.ReportStats();
 }

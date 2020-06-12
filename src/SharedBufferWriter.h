@@ -9,7 +9,7 @@ class SharedBufferWriter : public SharedBuffer {
       ~SharedBufferWriter();
 
       bool AddSentenceToBuffer(std::string& sentence);
-      virtual char* WriteBuf();
+      virtual bool WriteBuf(char*& shrBufPtr);
       
    protected:
       virtual bool SentenceFits(int len);
