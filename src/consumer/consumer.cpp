@@ -1,7 +1,7 @@
 #include <iostream>
-#include "Config.h"
 #include <unistd.h>
 #include <cstdlib>
+#include "Consumer.h"
 
 int ProcessArgs(int argc, char* argv[], int& N, std::string& match) {
    int opt;
@@ -45,4 +45,6 @@ int main(int argc, char* argv[]) {
 
    std::cout << "Num Bufs: " << N << ", match: " << match << std::endl;
 
+   Consumer consumer("../conf/pcConf", N, match);
+   consumer.Run();
 }

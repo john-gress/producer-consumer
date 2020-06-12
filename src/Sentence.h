@@ -4,7 +4,7 @@
 
 class Sentence {
    public:
-      Sentence(std::string inputFile, int bufSize);
+      Sentence(std::string match, int bufSize);
       ~Sentence();
 
       int ProcessBuf(char* buf);
