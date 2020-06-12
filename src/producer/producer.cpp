@@ -1,7 +1,7 @@
 #include <iostream>
-#include "Config.h"
 #include <unistd.h>
 #include <cstdlib>
+#include "Producer.h"
 
 int ProcessArgs(int argc, char* argv[], int& N, std::string& filename) {
    int opt;
@@ -45,4 +45,7 @@ int main(int argc, char* argv[]) {
 
    std::cout << "Num Bufs: " << N << ", filename: " << filename << std::endl;
 
+   Producer producer("../conf/pcConf", N, filename);
+   producer.Run();
+   producer.Shutdown();
 }

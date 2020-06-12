@@ -16,13 +16,11 @@ TEST_F(FileInputTests, GetOneSentenceTest) {
 
    FileInput myFileInput(testFile, BufSize);
 
-   unsigned long len;
-   char buf[BufSize];
-   std::memset(buf, 0, BufSize);
-   len = myFileInput.GetNextSentence(buf);
+   std::string sBuf(BufSize, '\0');
+   myFileInput.GetNextSentence(sBuf);
 
-   EXPECT_EQ(testFileContent.size(), len);
-   EXPECT_EQ(testFileContent, buf);
+   EXPECT_EQ(testFileContent.length(), sBuf.length());
+   EXPECT_EQ(testFileContent, sBuf);
 
    RemoveTestFile(testFile);
 }
@@ -40,25 +38,22 @@ TEST_F(FileInputTests, SentencePunctuationTest) {
 
    FileInput myFileInput(testFile, BufSize);
 
-   unsigned long len;
-   char buf[BufSize];
-   std::memset(buf, 0, BufSize);
+   std::string sBuf(BufSize, '\0');
 
-   len = myFileInput.GetNextSentence(buf);
-   EXPECT_EQ(sentence1.size(), len);
-   EXPECT_EQ(sentence1, buf);
+   myFileInput.GetNextSentence(sBuf);
+   EXPECT_EQ(sentence1.length(), sBuf.length());
+   EXPECT_EQ(sentence1, sBuf);
 
-   len = myFileInput.GetNextSentence(buf);
-   EXPECT_EQ(sentence2.size(), len);
-   EXPECT_EQ(sentence2, buf);
+   myFileInput.GetNextSentence(sBuf);
+   EXPECT_EQ(sentence2.length(), sBuf.length());
+   EXPECT_EQ(sentence2, sBuf);
 
-   len = myFileInput.GetNextSentence(buf);
-   EXPECT_EQ(sentence3.size(), len);
-   EXPECT_EQ(sentence3, buf);
+   myFileInput.GetNextSentence(sBuf);
+   EXPECT_EQ(sentence3.length(), sBuf.length());
+   EXPECT_EQ(sentence3, sBuf);
 
-   len = myFileInput.GetNextSentence(buf);
-   EXPECT_EQ(0, len);
-   EXPECT_EQ('\0', buf[0]);
+   myFileInput.GetNextSentence(sBuf);
+   EXPECT_EQ(0, sBuf.length());
 
    RemoveTestFile(testFile);
 }
@@ -77,17 +72,14 @@ TEST_F(FileInputTests, BreakSentenceAcrossCRTest) {
 
    FileInput myFileInput(testFile, BufSize);
 
-   unsigned long len;
-   char buf[BufSize];
-   std::memset(buf, 0, BufSize);
+   std::string sBuf(BufSize, '\0');
 
-   len = myFileInput.GetNextSentence(buf);
-   EXPECT_EQ(sentence1.size(), len);
-   EXPECT_EQ(sentence1, buf);
+   myFileInput.GetNextSentence(sBuf);
+   EXPECT_EQ(sentence1.length(), sBuf.length());
+   EXPECT_EQ(sentence1, sBuf);
 
-   len = myFileInput.GetNextSentence(buf);
-   EXPECT_EQ(0, len);
-   EXPECT_EQ('\0', buf[0]);
+   myFileInput.GetNextSentence(sBuf);
+   EXPECT_EQ(0, sBuf.length());
 
    RemoveTestFile(testFile);
 }
@@ -105,23 +97,20 @@ TEST_F(FileInputTests, SentenceOverMaxTest) {
 
    FileInput myFileInput(testFile, BufSize);
 
-   unsigned long len;
-   char buf[BufSize];
-   std::memset(buf, 0, BufSize);
+   std::string sBuf(BufSize, '\0');
 
-   len = myFileInput.GetNextSentence(buf);
-   EXPECT_EQ(sentence1.size(), len);
-   EXPECT_EQ(sentence1, buf);
+   myFileInput.GetNextSentence(sBuf);
+   EXPECT_EQ(sentence1.length(), sBuf.length());
+   EXPECT_EQ(sentence1, sBuf);
 
-   len = myFileInput.GetNextSentence(buf);
-   EXPECT_EQ(sentence2.size(), len);
-   EXPECT_EQ(sentence2, buf);
+   myFileInput.GetNextSentence(sBuf);
+   EXPECT_EQ(sentence2.length(), sBuf.length());
+   EXPECT_EQ(sentence2, sBuf);
 
    // sentence # 3 is dropped
 
-   len = myFileInput.GetNextSentence(buf);
-   EXPECT_EQ(0, len);
-   EXPECT_EQ('\0', buf[0]);
+   myFileInput.GetNextSentence(sBuf);
+   EXPECT_EQ(0, sBuf.length());
 
    RemoveTestFile(testFile);
 }

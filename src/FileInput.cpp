@@ -20,35 +20,36 @@ FileInput::~FileInput() {
    }
 }
 
-// bufPtr points to a buffer of size mMaxS or bigger.
-unsigned long FileInput::GetNextSentence(char* bufPtr) {
-   unsigned long len(0);
+bool FileInput::EndOfFile() {
+   return !mFile.is_open() || mFile.eof();
+}
+
+// sBuf points to a string buffer of size mMaxS or bigger.
+void FileInput::GetNextSentence(std::string& sBuf) {
+   sBuf.clear();
    bool sentenceEnd(false);
    while (mFile.is_open() && ! mFile.eof() && ! sentenceEnd) {
       char c = mFile.get();
       if (c == '\n') {
-         bufPtr[len] = ' '; // replace CR with space
+         sBuf.push_back(' '); // replace CR with space
       } else {
-         bufPtr[len] = c; // char is part of the sentence
+         sBuf.push_back(c); // char is part of the sentence
       }
-      len++;
       if (c == EOF || c == '.' || c == '?' || c == '!') {
          sentenceEnd = true;
       }
-      if (len > mMaxS) {
+      if (sBuf.length() > mMaxS) {
          // Drop sentences greater than mMaxS in length. Move on to next sentence.
-         len = 0;
+         sBuf.clear();
          ReadToSentenceEnd();
       }
    }
    if (sentenceEnd) {
       ReadWhiteSpace();
    }
-   bufPtr[len] = '\0'; // null terminate string, but don't count null termination character
-   if (len > 0) {
-      std::cout << std::endl << "\"" << bufPtr << "\"" << std::endl;
+   if (sBuf.length() > 0) {
+      std::cout << std::endl << "\"" << sBuf << "\"" << std::endl;
    }
-   return len;
 }
 
 void FileInput::ReadToSentenceEnd() {

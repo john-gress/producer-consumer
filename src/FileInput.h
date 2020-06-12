@@ -8,7 +8,8 @@ class FileInput {
       FileInput(std::string inputFile, int bufSize);
       ~FileInput();
 
-      unsigned long GetNextSentence(char* bufPtr);
+      bool EndOfFile();
+      void GetNextSentence(std::string& sBuf);
 
    private:
       void ReadToSentenceEnd();
