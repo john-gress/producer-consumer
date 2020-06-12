@@ -49,3 +49,7 @@ set(consumer_exe consumer)
 add_executable(${consumer_exe} src/consumer/consumer.cpp)
 target_link_libraries(${consumer_exe} ${LIBRARY_TO_BUILD} -lstdc++ ${PLATFORM_LINK_LIBRIES})
 
+set(pcchaos_exe pcchaos)
+add_executable(${pcchaos_exe} src/pcchaos/pcchaos.cpp)
+target_link_libraries(${pcchaos_exe} ${LIBRARY_TO_BUILD} -lstdc++ ${PLATFORM_LINK_LIBRIES})
+
