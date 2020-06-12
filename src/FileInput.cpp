@@ -9,6 +9,9 @@ FileInput::FileInput(std::string inputFile, int bufSize) :
    mSentenceCount(0),
    mOversizeCount(0)
 {
+   // To improve performance of std::cout
+   std::ios::sync_with_stdio(false);
+
    if (mFile.is_open()) {
       std::cout << inputFile << " successfully opened for reading." << std::endl;
    } else {
@@ -54,7 +57,7 @@ void FileInput::GetNextSentence(std::string& sBuf) {
    }
    if (sBuf.length() > 0) {
       mSentenceCount++;
-      std::cout << std::endl << "\"" << sBuf << "\"" << std::endl;
+      std::cout << "\n\"" << sBuf << "\"\n";
    }
 }
 
