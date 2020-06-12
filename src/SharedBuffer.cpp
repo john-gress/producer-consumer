@@ -4,6 +4,8 @@
 #include <fcntl.h>           /* For O_* constants */
 #include <sys/stat.h>        /* For mode constants */
 #include <sys/mman.h>
+#include <cerrno>
+#include <cstring>
 
 SharedBuffer::SharedBuffer(int numBufs, int sizeBuf, std::string bufName, bool create) :
    mNumBufs(numBufs),
@@ -29,8 +31,9 @@ void SharedBuffer::SetupSharedBuffer(bool create) {
    }
 
    if (ftruncate(mShrMemFd, mNumBufs * mBufSize) != 0) {
+      std::string errnoMsg(strerror(errno));
       std::cerr << "Unable to truncate shared memory, " << mSharedMemName << ", to size:"
-         << mNumBufs * mBufSize << std::endl;
+         << mNumBufs * mBufSize << ", " << errnoMsg << std::endl;
       exit(1);
    }
 
@@ -41,14 +44,23 @@ void SharedBuffer::SetupSharedBuffer(bool create) {
          mShrMemFd,
          0); // offset: start at 1st byte
    if ((void*) -1 == mShrMemPtr) {
-      std::cerr << "Unable to access shared memory: " << mSharedMemName << std::endl;
+      std::string errnoMsg(strerror(errno));
+      std::cerr << "Unable to access shared memory: " << mSharedMemName << ", " << errnoMsg << std::endl;
       exit(1);
    }
 }
 
 SharedBuffer::~SharedBuffer() {
-   munmap(mShrMemPtr, mNumBufs * mBufSize);
-   shm_unlink(mSharedMemName.c_str());
+   if (munmap(mShrMemPtr, mNumBufs * mBufSize) != 0) {
+      std::string errnoMsg(strerror(errno));
+      std::cerr << "Unable to munmap memory: " << mSharedMemName << ", " << errnoMsg << std::endl;
+   }
+   if (shm_unlink(mSharedMemName.c_str()) != 0 && errno != ENOENT) {
+      // ENOENT = No such file or directory. This is normal, as there is a race condition for which process deletes 
+      // the file.
+      std::string errnoMsg(strerror(errno));
+      std::cerr << "Unable to unlink file: " << mSharedMemName << ", " << errnoMsg << std::endl;
+   }
 }
 
 char* SharedBuffer::GetSharedMemBufPtr() {

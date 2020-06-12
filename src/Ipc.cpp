@@ -25,36 +25,40 @@ void Ipc::SetupIpc(bool create) {
 
    mBufferSemPtr = sem_open(mBufferSemName.c_str(), oflag, mode, 0);
    if (mBufferSemPtr == nullptr) {
-      std::cerr << "Failed to open semaphore for: " << mBufferSemName << std::endl;
+      std::string errnoMsg(strerror(errno));
+      std::cerr << "Failed to open semaphore for: " << mBufferSemName << ", " << errnoMsg << std::endl;
       exit(1);
    }
 
    mFinishedSemPtr = sem_open(mFinishedSemName.c_str(), oflag, mode, 0);
    if (mFinishedSemPtr == nullptr) {
-      std::cerr << "Failed to open semaphore for: " << mFinishedSemName << std::endl;
+      std::string errnoMsg(strerror(errno));
+      std::cerr << "Failed to open semaphore for: " << mFinishedSemName << ", " << errnoMsg << std::endl;
       exit(1);
    }
 }
 
 Ipc::~Ipc() {
-   int ret = sem_close(mBufferSemPtr);
-   if (ret != 0) {
+   if (sem_close(mBufferSemPtr) != 0) {
       std::string errnoMsg(strerror(errno));
       std::cout << "Failed to close buffer semaphore: " << errnoMsg << std::endl;
    }
-   ret = sem_unlink(mBufferSemName.c_str());
-   if (ret != 0) {
+   
+   if (sem_unlink(mBufferSemName.c_str()) != 0 && errno != ENOENT) {
+      // ENOENT = No such file or directory. This is normal, as there can be a race condition for which process
+      // deletes the file.
       std::string errnoMsg(strerror(errno));
       std::cout << "Failed to unlink: " <<  mBufferSemName << ", " << errnoMsg << std::endl;
    }
 
-   ret = sem_close(mFinishedSemPtr);
-   if (ret != 0) {
+   if (sem_close(mFinishedSemPtr) != 0) {
       std::string errnoMsg(strerror(errno));
       std::cout << "Failed to close buffer semaphore: " << errnoMsg << std::endl;
    }
-   ret = sem_unlink(mFinishedSemName.c_str());
-   if (ret != 0) {
+   
+   if (sem_unlink(mFinishedSemName.c_str()) != 0 && errno != ENOENT) {
+      // ENOENT = No such file or directory. This is normal, as there can be a race condition for which process
+      // deletes the file.
       std::string errnoMsg(strerror(errno));
       std::cout << "Failed to unlink: " <<  mFinishedSemName << ", " << errnoMsg << std::endl;
    }
